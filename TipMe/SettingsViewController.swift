@@ -8,8 +8,20 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UITableViewController {
 
+    @IBOutlet weak var showTipSlider: UISwitch!
+    
+    let defaults = UserDefaults.standard
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if (defaults.integer(forKey: "showSlider") == 0) {
+            showTipSlider.setOn(false, animated: false)
+        } else if (defaults.integer(forKey: "showSlider") == 1) {
+            showTipSlider.setOn(true, animated: false)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,16 +32,14 @@ class SettingsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func showTipSlider(_ sender: Any) {
+        if showTipSlider.isOn {
+            defaults.set(1, forKey: "showSlider")
+            print("on")
+        } else if (!showTipSlider.isOn) {
+            defaults.set(0, forKey: "showSlider")
+            print("off")
+        }
     }
-    */
-
 }
