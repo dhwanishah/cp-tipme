@@ -11,6 +11,7 @@ import UIKit
 class SettingsViewController: UITableViewController {
 
     @IBOutlet weak var showTipSlider: UISwitch!
+    @IBOutlet weak var defaultTipSegment: UISegmentedControl!
     
     let defaults = UserDefaults.standard
     
@@ -20,6 +21,19 @@ class SettingsViewController: UITableViewController {
         } else if (defaults.integer(forKey: "showSlider") == 1) {
             showTipSlider.setOn(true, animated: false)
         }
+        
+        if (defaults.integer(forKey: "defaultTip") == 0) {
+            defaultTipSegment.selectedSegmentIndex = 0;
+        } else if (defaults.integer(forKey: "defaultTip") == 1) {
+            defaultTipSegment.selectedSegmentIndex = 1;
+        } else if (defaults.integer(forKey: "defaultTip") == 2) {
+            defaultTipSegment.selectedSegmentIndex = 2;
+        }
+//        if (defaults.integer(forKey: "showSlider") == 0) {
+//            showTipSlider.setOn(false, animated: false)
+//        } else if (defaults.integer(forKey: "showSlider") == 1) {
+//            showTipSlider.setOn(true, animated: false)
+//        }
     }
     
     override func viewDidLoad() {
@@ -40,6 +54,16 @@ class SettingsViewController: UITableViewController {
         } else if (!showTipSlider.isOn) {
             defaults.set(0, forKey: "showSlider")
             print("off")
+        }
+    }
+    
+    @IBAction func defaultTipChanged(_ sender: Any) {
+        if (defaultTipSegment.selectedSegmentIndex == 0) {
+            defaults.set(0, forKey: "defaultTip")
+        } else if (defaultTipSegment.selectedSegmentIndex == 1) {
+            defaults.set(1, forKey: "defaultTip")
+        } else if (defaultTipSegment.selectedSegmentIndex == 2) {
+            defaults.set(2, forKey: "defaultTip")
         }
     }
 }

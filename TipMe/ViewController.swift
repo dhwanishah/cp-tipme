@@ -16,16 +16,24 @@ class ViewController: UIViewController {
     @IBOutlet weak var tipPercentageSelection: UISegmentedControl!
     @IBOutlet weak var tipSliderAmountLabel: UILabel!
     @IBOutlet weak var tipAmountSlider: UISlider!
+    @IBOutlet weak var plusOnePersonLabel: UILabel!
+    @IBOutlet weak var plusTwoPersonLabel: UILabel!
+    @IBOutlet weak var plusThreePersonLabel: UILabel!
     
     let defaults = UserDefaults.standard
     
     override func viewWillAppear(_ animated: Bool) {
-        self.view.backgroundColor = UIColor.init(red: 220, green: 237, blue:200, alpha: 1)
+        self.view.backgroundColor = UIColor.init(red: 0, green: 20, blue: 10, alpha: 0.5)
         let showSliderValObj = defaults.object(forKey: "showSlider")
         let showSliderValInt = defaults.integer(forKey: "showSlider")
         let amountEnteredPrevInt = defaults.integer(forKey: "amountEntered")
+        let defaultTipObj = defaults.object(forKey: "defaultTip")
+        let defaultTipInt = defaults.integer(forKey: "defaultTip")
         if (showSliderValObj == nil) {
             defaults.set(0, forKey: "showSlider")
+        }
+        if (defaultTipObj == nil) {
+            defaults.set(0, forKey: "defaultTip")
         }
         if (showSliderValInt == 0) {
             showTipSlider(false)
@@ -37,6 +45,14 @@ class ViewController: UIViewController {
         if (amountEnteredPrevInt != 0) {
             amountEnteredTextField.text = String(amountEnteredPrevInt)
         }
+        if (defaultTipInt == 0) {
+            tipPercentageSelection.selectedSegmentIndex = 0;
+        } else if (defaultTipInt == 1) {
+            tipPercentageSelection.selectedSegmentIndex = 1;
+        } else if (defaultTipInt == 2) {
+            tipPercentageSelection.selectedSegmentIndex = 2;
+        }
+        onAmountChange(self)
     }
     
     override func viewDidLoad() {
@@ -67,6 +83,9 @@ class ViewController: UIViewController {
             let total = amountEntered + tip
             tipAmountLabel.text = String(format: "$%.2f", tip)
             totalAmountLabel.text = String(format: "$%.2f", total)
+            plusOnePersonLabel.text = String(format: "$%.2f per person", total/2)
+            plusTwoPersonLabel.text = String(format: "$%.2f per person", total/3)
+            plusThreePersonLabel.text = String(format: "$%.2f per person", total/4)
         } else if (defaults.integer(forKey: "showSlider") == 1) {
             //let tipAmounts = [0.15, 0.18, 0.20]
             tipAmountSlider.setValue(Float(lroundf(tipAmountSlider.value)), animated: true)
@@ -80,6 +99,9 @@ class ViewController: UIViewController {
             tipSliderAmountLabel.text = String(format: "%.0f%%", tipAmountSlider.value)
             tipAmountLabel.text = String(format: "$%.2f", tip)
             totalAmountLabel.text = String(format: "$%.2f", total)
+            plusOnePersonLabel.text = String(format: "$%.2f per person", total/2)
+            plusTwoPersonLabel.text = String(format: "$%.2f per person", total/3)
+            plusThreePersonLabel.text = String(format: "$%.2f per person", total/4)
         }
     }
     
